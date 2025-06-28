@@ -1,16 +1,21 @@
 {
   "name": "react-native-react-bridge",
-  "version": "0.1.1",
+  "version": "1.0.0",
   "exports": {
     ".": {
       "require": "./dist/index.js",
       "import": "./dist/index.mjs",
       "types": "./dist/index.d.ts"
     },
-    "./react": {
-      "require": "./dist/react.js",
-      "import": "./dist/react.mjs",
-      "types": "./dist/react.d.ts"
+    "./webview": {
+      "require": "./dist/webview.js",
+      "import": "./dist/webview.mjs",
+      "types": "./dist/webview.d.ts"
+    },
+    "./native": {
+      "require": "./dist/native.js",
+      "import": "./dist/native.mjs",
+      "types": "./dist/native.d.ts"
     }
   },
   "main": "dist/index.js",
@@ -23,10 +28,11 @@
     "dev": "tsup --watch"
   },
   "peerDependencies": {
-    "react": "^18.0.0 || ^19.0.0 || >=17.0.0"
+    "react": "^18.0.0 || ^19.0.0 || >=17.0.0",
+    "react-native-webview": "^13.0.0"
   },
   "devDependencies": {
-    "@types/react": "^18.0.0",
+    "@types/react": "^19.1.0",
     "tsup": "^7.0.0",
     "typescript": "^5.0.0"
   }

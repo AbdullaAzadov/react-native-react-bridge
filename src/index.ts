@@ -1,5 +1,1 @@
-export type {
-  BridgeMessage,
-  BridgeMessageHandler,
-  BridgeListenersMap,
-} from './types/bridge';
+export type { BridgeMessage, BridgeMessageHandler } from './types/bridge';

@@ -13,6 +13,7 @@ export default defineConfig([
   {
     entry: {
       react: 'src/react/index.ts',
+      native: 'src/native/index.ts',
     },
     dts: true,
     format: ['esm', 'cjs'],

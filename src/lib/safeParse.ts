@@ -1,26 +1,24 @@
 'use client';
-export function safeParse<T>(data: unknown): T | null {
+
+import { BridgeMessage } from 'src/types/bridge';
+
+export function safeParse(data: unknown): BridgeMessage<string, any> | null {
   try {
-    if (typeof data === 'string') {
-      const firstParse = JSON.parse(data);
-      if (typeof firstParse === 'object' && firstParse !== null) {
-        return firstParse as T;
+    if (typeof data === 'object' && data !== null) {
+      if ('query' in data && 'data' in data) {
+        return data as BridgeMessage<string, any>;
       }
-      try {
-        const secondParse = JSON.parse(firstParse);
-        return secondParse as T;
-      } catch (error) {
-        return firstParse as T;
-      }
+      return null;
     }
 
-    if (typeof data === 'object' && data !== null) {
-      return data as T;
+    if (typeof data === 'string') {
+      const parsed = JSON.parse(data);
+      return safeParse(parsed);
     }
 
     return null;
   } catch (e) {
-    console.warn('[safeParse] Failed:', e);
+    console.warn('[safeParse] Failed:', data, e);
     return null;
   }
 }
