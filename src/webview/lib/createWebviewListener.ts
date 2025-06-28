@@ -1,4 +1,5 @@
 'use client';
+
 type BridgeMessageHandler<TMap, K extends keyof TMap> = (data: TMap[K]) => void;
 
 export function createWebviewListener<TMap extends Record<string, any>>() {
@@ -6,25 +7,7 @@ export function createWebviewListener<TMap extends Record<string, any>>() {
     [K in keyof TMap]?: Set<BridgeMessageHandler<TMap, K>>;
   } = {};
 
-  function on<K extends keyof TMap>(
-    query: K,
-    handler: BridgeMessageHandler<TMap, K>
-  ) {
-    if (!listeners[query]) listeners[query] = new Set();
-    listeners[query]!.add(handler);
-  }
-
-  function off<K extends keyof TMap>(
-    query: K,
-    handler: BridgeMessageHandler<TMap, K>
-  ) {
-    listeners[query]?.delete(handler);
-  }
-
-  function clear() {
-    window.removeEventListener('message', handleRawMessage);
-    Object.values(listeners).forEach((set) => set?.clear());
-  }
+  let isListening = false;
 
   function handleRawMessage(event: MessageEvent) {
     try {
@@ -38,7 +21,36 @@ export function createWebviewListener<TMap extends Record<string, any>>() {
     }
   }
 
-  window.addEventListener('message', handleRawMessage);
+  function ensureListener() {
+    if (typeof window !== 'undefined' && !isListening) {
+      window.addEventListener('message', handleRawMessage);
+      isListening = true;
+    }
+  }
+
+  function on<K extends keyof TMap>(
+    query: K,
+    handler: BridgeMessageHandler<TMap, K>
+  ) {
+    ensureListener();
+    if (!listeners[query]) listeners[query] = new Set();
+    listeners[query]!.add(handler);
+  }
+
+  function off<K extends keyof TMap>(
+    query: K,
+    handler: BridgeMessageHandler<TMap, K>
+  ) {
+    listeners[query]?.delete(handler);
+  }
+
+  function clear() {
+    if (typeof window !== 'undefined' && isListening) {
+      window.removeEventListener('message', handleRawMessage);
+      isListening = false;
+    }
+    Object.values(listeners).forEach((set) => set?.clear());
+  }
 
   return { on, off, clear };
 }

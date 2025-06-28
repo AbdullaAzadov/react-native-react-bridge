@@ -1,6 +1,6 @@
 {
   "name": "react-native-react-bridge",
-  "version": "1.0.3",
+  "version": "1.0.4",
   "exports": {
     ".": {
       "require": "./dist/index.js",
@@ -28,7 +28,6 @@
     "dev": "tsup --watch"
   },
   "peerDependencies": {
-    "react": "^18.0.0 || ^19.0.0 || >=17.0.0",
     "react-native-webview": "^13.0.0"
   },
   "devDependencies": {
