@@ -12,7 +12,7 @@ export default defineConfig([
   },
   {
     entry: {
-      react: 'src/react/index.ts',
+      webview: 'src/webview/index.ts',
       native: 'src/native/index.ts',
     },
     dts: true,
